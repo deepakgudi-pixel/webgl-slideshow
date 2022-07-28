@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant&family=Proza+Libre&display=swap');
+
+
+
+body{
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #F3F4F6;
+    color: #000000;
+    font-family: 'Cormorant', serif;
+}
+
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+header div.description{
+    font-family: 'Proza Libre', sans-serif;
+}
+
+nav{
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+div.canvas-holder{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.canvas-holder img{
+    width: 60vmin;
+    height: 90vmin;
+    
+}
+
+nav a{
+    text-decoration: none;
+    color: #000000;
+    padding: 40px;
+    transition: color 0.5s;
+}
+
+nav a:hover{
+    color: #8a8a8a;
+}
