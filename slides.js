@@ -30,10 +30,28 @@ console.log(photos.length);
 const prevTag = document.querySelector("nav a.prev");
 const nextTag = document.querySelector("nav a.next");
 const descriptionTag = document.querySelector("header div");
-const imageTag = document.querySelector("div.canvas-holder img");
-
+// const imageTag = document.querySelector("div.canvas-holder img");
+const canvas = document.querySelector("div.canvas-holder canvas");
+const sandbox = new GlslCanvas(canvas);
+sandbox.load(frag);
 
 let index = 0;
+
+const sizer = function (){
+   const ww = window.innerWidth;
+   const wh = window.innerHeight;
+   const s = Math.min(ww, wh);
+   const dpi = window.devicePixelRatio;
+
+   canvas.width =  s * 0.6 * dpi;
+   canvas.height = s * 0.9 * dpi;
+   canvas.style.width = Math.round(s * 0.6) + "px";
+   canvas.style.height = Math.round(s * 0.9) + "px";
+
+}
+
+
+
 
 const next = () => {
     index = index + 1;
@@ -57,10 +75,14 @@ const prev = () => {
 
 const update = () => {
     descriptionTag.innerHTML = photos[index].title;
-    imageTag.setAttribute("src", photos[index].src);
+    // imageTag.setAttribute("src", photos[index].src);
+
 }
 
 //events
+
+sizer();
+
 nextTag.addEventListener("click",(e) => {
      e.preventDefault();
      next();
@@ -69,4 +91,8 @@ nextTag.addEventListener("click",(e) => {
 prevTag.addEventListener("click", (e) => {
     e.preventDefault();
     prev();
+})
+
+window.addEventListener("resize", function(){
+    sizer();
 })

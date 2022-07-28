@@ -41,11 +41,16 @@ div.canvas-holder{
     justify-content: center;
 }
 
-div.canvas-holder img{
+/* div.canvas-holder img{
     width: 60vmin;
-    height: 90vmin;
-    
+    height: 90vmin;  
+} */
+
+div.canvas-holder canvas{
+    width: 60vmin;
+    height: 90vmin;  
 }
+
 
 nav a{
     text-decoration: none;
