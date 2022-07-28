@@ -81,8 +81,6 @@ const update = () => {
 
 //events
 
-sizer();
-
 nextTag.addEventListener("click",(e) => {
      e.preventDefault();
      next();
