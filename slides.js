@@ -33,9 +33,15 @@ const descriptionTag = document.querySelector("header div");
 // const imageTag = document.querySelector("div.canvas-holder img");
 const canvas = document.querySelector("div.canvas-holder canvas");
 const sandbox = new GlslCanvas(canvas);
-sandbox.load(frag);
+sandbox.load(frag(photos));
 
-let index = 0;
+let startIndex = 0;
+let endIndex = 0;
+
+// quick way to get time
+let timeline = performance.now() - 9999; 
+
+
 
 const sizer = function (){
    const ww = window.innerWidth;
@@ -54,30 +60,66 @@ const sizer = function (){
 
 
 const next = () => {
-    index = index + 1;
+    endIndex = endIndex + 1;
 
-    if (index > photos.length - 1) {
-      index = 0;
+    if (endIndex > photos.length - 1) {
+      endIndex = 0;
     }
 
     update();
 }
 
 const prev = () => {
-    index = index - 1;
+    endIndex = endIndex - 1;
     
-   if(index < 0) {
-    index = photos.length - 1;
+   if(endIndex < 0) {
+    endIndex = photos.length - 1;
    }
     
     update();
 }
 
 const update = () => {
-    descriptionTag.innerHTML = photos[index].title;
+    descriptionTag.innerHTML = photos[endIndex].title;
     // imageTag.setAttribute("src", photos[index].src);
 
+    //reset timeline for every single update
+    timeline = performance.now();
+
+
+
+
+    sandbox.setUniform("startIndex", startIndex);
+    sandbox.setUniform("endIndex", endIndex);
+    tick();
+
+    startIndex = endIndex;
+
 }
+
+
+const tick = () => {
+  const diff = (performance.now() - timeline) / 1000; //from past to now
+  sandbox.setUniform("timeline", diff);
+
+  //run tick on every single frame of the page
+  requestAnimationFrame(tick);
+
+}
+
+//loading texture
+
+const load = () => {
+    sizer();
+    tick();
+    // sandbox.setUniform("image5", "images/image5.jpg");
+
+    photos.forEach((photo, index)=>{
+        sandbox.setUniform(`textures[${index}]`, photo.src);
+    })
+}
+
+load();
 
 //events
 

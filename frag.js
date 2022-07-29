@@ -1,24 +1,32 @@
-const frag = `
+const frag = function(items){
+
+    const textureLoop = items.map((item, index) =>{
+      return `
+        if(index == ${index}){
+            return texture2D(textures[${index}], uv);
+        }
+      `
+    }).join(" else ");
+
+    
+ return `
 
 #ifdef GL_ES
 precision highp float;
 #endif
 
-#define MAX 6
+#define MAX ${items.length}
 
 uniform float u_time;
 uniform vec2 U_resolution;
 
 uniform float timeline;
 
-uniform sampler2D image1;
-uniform sampler2D image2;
-uniform sampler2D image3;
-uniform sampler2D image4;
+
 uniform sampler2D textures[MAX];
 
-uniform int startIndex;
-uniform int endIndex;
+uniform float startIndex;
+uniform float endIndex;
 
 varying vec3 v_normal;
 varying vec2 v_texcoord;
@@ -27,15 +35,9 @@ varying vec2 v_texcoord;
 ${includes}
 
 vec4 sampleColor(int index, vec2 uv){
-    if (index == 0){
-       return texture2D(image1, uv);
-    }else if (index == 1){
-       return texture2D(image2, uv);
-    }else if (index == 2){
-        return texture2D(image3, uv); 
-    }else if (index == 3){
-        return texture2D(image4, uv);
-    }
+
+    ${textureLoop}
+    
      return vec4(1.0, 1.0, 1.0, 1.0);
    }
    
@@ -58,8 +60,8 @@ vec4 sampleColor(int index, vec2 uv){
        uv *= distortion;
        uv += 0.5;
        
-       //flip the texture
-       uv.y = 1.0 - uv.y;
+    //    //flip the texture
+    //    uv.y = 1.0 - uv.y;
        
        //get rid of extras
        if(uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0 ){
@@ -67,8 +69,8 @@ vec4 sampleColor(int index, vec2 uv){
        }
        
        //pick images
-       vec4 startTexture = sampleColor(startIndex, uv);
-       vec4 endTexture = sampleColor(endIndex, uv);
+       vec4 startTexture = sampleColor(int(startIndex), uv);
+       vec4 endTexture = sampleColor(int(endIndex), uv);
        
        
        //tween
@@ -84,4 +86,4 @@ vec4 sampleColor(int index, vec2 uv){
 
 
 
-`
+`}
